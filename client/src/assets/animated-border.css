@@ -1,0 +1,96 @@
+/* src/styles/animated-border.css */
+
+.glow-border-wrapper {
+    position: relative;
+    display: inline-block;
+    border-radius: 9999px;
+    padding: 1px; 
+    background: conic-gradient(
+      from 0deg,
+      #ff0080,
+      #7928ca,
+      #2afadf,
+      #ff0080
+    );
+    animation: spinGradient 4s linear infinite;
+  }
+  
+  @keyframes spinGradient {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  /* Yeni animasyon - Border sabit kalır, sadece gradient renkleri hareket eder */
+  .animate-spin-gradient {
+    animation: rotateBorder 4s linear infinite;
+  }
+
+  @keyframes rotateBorder {
+    0% {
+      background: conic-gradient(from 0deg, #ff0080, #7928ca, #2afadf, #ff0080);
+    }
+    25% {
+      background: conic-gradient(from 90deg, #ff0080, #7928ca, #2afadf, #ff0080);
+    }
+    50% {
+      background: conic-gradient(from 180deg, #ff0080, #7928ca, #2afadf, #ff0080);
+    }
+    75% {
+      background: conic-gradient(from 270deg, #ff0080, #7928ca, #2afadf, #ff0080);
+    }
+    100% {
+      background: conic-gradient(from 360deg, #ff0080, #7928ca, #2afadf, #ff0080);
+    }
+  }
+
+  /* En iyi çözüm - CSS custom property animasyonu */
+  .animate-gradient-spin {
+    --angle: 0deg;
+    background: conic-gradient(from var(--angle), #ff0080 0%, #7928ca 25%, #2afadf 50%, #ff6b35 75%, #ff0080 100%);
+    animation: gradientSpin 4s linear infinite;
+  }
+
+  @keyframes gradientSpin {
+    0% {
+      --angle: 0deg;
+    }
+    100% {
+      --angle: 360deg;
+    }
+  }
+
+  /* Alternatif çözüm - Pseudo element ile */
+  .animate-gradient-spin-alt {
+    position: relative;
+  }
+
+  .animate-gradient-spin-alt::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: conic-gradient(from 0deg, #ff0080 0%, #7928ca 25%, #2afadf 50%, #ff6b35 75%, #ff0080 100%);
+    animation: spinGradientBefore 4s linear infinite;
+    z-index: -1;
+  }
+
+  @keyframes spinGradientBefore {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  
+  .glow-border-button {
+    position: relative;
+    z-index: 1;
+    border-radius: 9999px;
+    background-color: white;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    color: black;
+  }
+  

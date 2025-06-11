@@ -15,13 +15,14 @@ import Orders from './components/Admin/Orders';
 import AdminProducts from './components/Admin/AdminProducts';
 import AdminHome from './components/Admin/AdminHome';
 import ProtectedAdminRoute from './components/ProtectedAdminRoute';
+import Home from './pages/Home';
 
 function App() {
   return (
     <div>
       <Navbar />
       <Routes>
-        <Route path="/" element={<Products />} />
+        <Route path="/" element={<Home />} />
         <Route path="/signUp" element={<SignUp />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/basket" element={<Basket />} />

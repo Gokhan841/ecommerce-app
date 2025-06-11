@@ -15,6 +15,14 @@ export default {
         "slate-gray": "#657166",       // Grili mavi ton
       }
     },
+    screens: {
+      'sm': '640px',
+      'md': '768px',
+      'custom-900': '900px',  // özel kırılım navbar için ekledim, çünkü 900den küçük ekranlarda yazı yazıldığında gözükmüyordu.
+      'lg': '1024px',
+      'xl': '1280px',
+      '2xl': '1536px',
+    },
   },
   plugins: [],
 };

@@ -25,13 +25,15 @@ export const BasketProvider = ({ children }) => {
 
  
     const addToBasket = (data) => {
+        // Güvenli ID erişimi - hem _id hem id'yi destekle
+        const itemId = data._id || data.id;
         
-        const existingItem = items.find(item => item._id === data._id);
+        const existingItem = items.find(item => (item._id || item.id) === itemId);
 
         if (existingItem) { // Ürün zaten sepette varsa miktarını arttırıyoruz
             setItems((prevItems) => {
                 return prevItems.map((item) => (
-                    item._id == data._id ? { ...item, quantity: item.quantity + 1 } : item
+                    (item._id || item.id) === itemId ? { ...item, quantity: item.quantity + 1 } : item
                 ));
             });
         } else { // Ürün sepette yoksa, yeni ürünü ekliyoruz                 
@@ -43,14 +45,14 @@ export const BasketProvider = ({ children }) => {
 
   
     const removeFromBasket = (id) => {
-        setItems(prevItems => prevItems.filter(item => item._id != id));
+        setItems(prevItems => prevItems.filter(item => (item._id || item.id) != id));
     };
 
     
     const increaseQuantity = (id) => {
         setItems(prev => (
             prev.map(item =>
-                id === item._id ? { ...item, quantity: item.quantity + 1 } : item
+                id === (item._id || item.id) ? { ...item, quantity: item.quantity + 1 } : item
             )
         ));
     };
@@ -59,7 +61,7 @@ export const BasketProvider = ({ children }) => {
     const decreaseQuantity = (id) => {
         setItems(prev => (
             prev.map(item =>
-                id === item._id && item.quantity > 1 ? { ...item, quantity: item.quantity - 1 } : item
+                id === (item._id || item.id) && item.quantity > 1 ? { ...item, quantity: item.quantity - 1 } : item
             )
         ));
     };

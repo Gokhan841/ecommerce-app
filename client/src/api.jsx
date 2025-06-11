@@ -13,11 +13,15 @@ axios.interceptors.request.use(
     const { origin } = new URL(config.url); // İstek URL'sinin origin'ini aldık (http://localhost:3000/api/products => http://localhost:3000 gibi )
     const allowedOrigins = [import.meta.env.VITE_BASE_URL];
  
+
+
     if (allowedOrigins.includes(origin) && token) {
       config.headers.Authorization = `Bearer ${token}`;
+   
+    } else {
+    
     }
 
-     console.log("Güncellenmiş Config:", config); // burdan kontrol edebilirim config de header kısmında autharazition olıp olmağını
     return config;
   },
   (error) => Promise.reject(error) // Hata durumunda bir Promise döndürüyoruz
