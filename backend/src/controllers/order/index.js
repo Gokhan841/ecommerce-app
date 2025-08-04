@@ -52,8 +52,28 @@ const GetMyOrders = async (req, res, next) => {
   }
 };
 
+const Update = async (req, res, next) => {
+  const { order_id } = req.params;
+  const input = req.body;
+
+  try {
+    const updated = await Order.findByIdAndUpdate(order_id, input, {
+      new: true,
+    }).populate('user', '-password -__v').populate('items');
+
+    if (!updated) {
+      throw Boom.badRequest("Order not found.");
+    }
+
+    res.json(updated);
+  } catch (e) {
+    next(e);
+  }
+};
+
 export default {
   Create,
   List,
   GetMyOrders,
+  Update,
 };

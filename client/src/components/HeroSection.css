@@ -1,15 +1,15 @@
 .hero-circular-clip {
-  clip-path: circle(85% at 85% 50%);
+  clip-path: ellipse(80% 60% at 80% 50%);
 }
 
 @media (min-width: 640px) {
   .hero-circular-clip {
-    clip-path: circle(80% at 80% 50%);
+    clip-path: ellipse(75% 60% at 75% 50%);
   }
 }
 
 @media (min-width: 1024px) {
   .hero-circular-clip {
-    clip-path: circle(70% at 70% 50%);
+    clip-path: ellipse(65% 60% at 65% 50%);
   }
 } 

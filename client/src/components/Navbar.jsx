@@ -35,7 +35,7 @@ const Navbar = () => {
             {/* Desktop/Tablet Navbar (768px and above) */}
             <div className="hidden md:block">
                 {/* Main Navigation */}
-                <nav className="flex items-center justify-between px-6 py-4 bg-blue-500">
+                <nav className="flex items-center justify-between px-6 py-4 bg-gradient-to-r from-blue-600 via-blue-500 to-blue-600">
                     {/* Left Side - Logo and Categories */}
                     <div className="flex items-center gap-6">
                         {/* Logo */}
@@ -173,7 +173,7 @@ const Navbar = () => {
             </div>
 
             {/* Mobile Navbar (below 768px) */}
-            <div className="md:hidden bg-blue-500">
+            <div className="md:hidden bg-gradient-to-r from-blue-600 via-blue-500 to-blue-600">
                 {/* Top Row - Logo and Icons */}
                 <div className="flex items-center justify-between px-4 py-3">
                     {/* Logo */}

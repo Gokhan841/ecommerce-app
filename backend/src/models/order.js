@@ -17,6 +17,11 @@ const OrderSchema = new Schema({
       ref: 'product',
     },
   ],
+  status: {
+    type: String,
+    enum: ['pending', 'confirmed', 'shipped', 'delivered', 'cancelled'],
+    default: 'pending',
+  },
   createdAt: {
     type: Date,
     default: Date.now,

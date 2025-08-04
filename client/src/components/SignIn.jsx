@@ -32,7 +32,14 @@ const SignInModal = ({ isOpen, onClose, onSwitchToSignUp }) => {
         const response = await FetchLogin(values);
         login(response);
         onClose(); // Modal'ı kapat
-        navigate("/profile");
+        
+        // Kullanıcının rolüne göre yönlendirme
+        if (response.data.user.role === "admin") {
+          navigate("/admin");
+        } else {
+          navigate("/profile");
+        }
+        
         resetForm();
       } catch (error) {
         console.error("Giriş sırasında hata oluştu:", error.response?.data || error.message);

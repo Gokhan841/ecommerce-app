@@ -115,7 +115,7 @@ const Card = ({ item }) => {
 
     return (
         <motion.div 
-          className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden border border-gray-200 hover:border-gray-300 flex flex-col h-full"
+          className="bg-white rounded-xl shadow-md overflow-hidden flex flex-col transition-transform duration-300 hover:scale-105 w-full max-w-xs mx-auto sm:max-w-sm md:max-w-md lg:max-w-sm xl:max-w-xs"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4 }}

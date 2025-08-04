@@ -72,17 +72,25 @@ const limit = 12;
 const GetList = async (req, res, next) => {
 	let { page } = req.query;
 
-	if (page < 1) {
-		page = 1;
-	}
-
-	const skip = (parseInt(page) - 1) * limit;
-
 	try {
-		const products = await Product.find({})
-			.sort({ createdAt: -1 })
-			.skip(skip)
-			.limit(limit);
+		let products;
+		
+		// Eğer sayfa parametresi yoksa tüm ürünleri getir (admin paneli için)
+		if (!page) {
+			products = await Product.find({})
+				.sort({ createdAt: -1 });
+		} else {
+			// Sayfalama ile getir (normal kullanım için)
+			if (page < 1) {
+				page = 1;
+			}
+			
+			const skip = (parseInt(page) - 1) * limit;
+			products = await Product.find({})
+				.sort({ createdAt: -1 })
+				.skip(skip)
+				.limit(limit);
+		}
 
 		res.json(products);
 	} catch (e) {

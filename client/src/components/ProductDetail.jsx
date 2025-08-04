@@ -2,7 +2,13 @@ import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { FetchProduct } from '../api';
 import { useQuery } from '@tanstack/react-query';
-import Slider from "react-slick";
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Pagination, EffectFade, Autoplay, Thumbs } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import 'swiper/css/effect-fade';
+import 'swiper/css/thumbs';
 import { useBasket } from '../contexts/Basket';
 import { motion } from 'framer-motion';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -67,6 +73,7 @@ const ProductDetail = () => {
     const [selectedImageIndex, setSelectedImageIndex] = useState(0);
     const [quantity, setQuantity] = useState(1);
     const [isAddingToCart, setIsAddingToCart] = useState(false);
+    const [thumbsSwiper, setThumbsSwiper] = useState(null);
 
     const { data, error, isLoading } = useQuery({
         queryKey: ['product', productId],
@@ -130,26 +137,6 @@ const ProductDetail = () => {
         }, 800);
     };
 
-    const sliderSettings = {
-        dots: true,
-        infinite: photos.length > 1,
-        speed: 500,
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        autoplay: photos.length > 1,
-        autoplaySpeed: 3000,
-        pauseOnHover: true,
-        responsive: [
-            {
-                breakpoint: 768,
-                settings: {
-                    dots: false,
-                    arrows: false
-                }
-            }
-        ]
-    };
-
     return (
         <div className="min-h-screen bg-gray-50">
             {/* Navigation Bar */}
@@ -194,51 +181,55 @@ const ProductDetail = () => {
                     >
                         <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
                             {photos.length > 1 ? (
-                                <Slider {...sliderSettings} className="product-slider">
-                                    {photos.map((photo, index) => (
-                                        <div key={index} className="relative">
-                                            <img
-                                                src={photo}
-                                                alt={`${product?.title} - Image ${index + 1}`}
-                                                className="w-full h-96 lg:h-[500px] object-cover"
-                                            />
-                                        </div>
-                                    ))}
-                                </Slider>
+                                <>
+                                    <Swiper
+                                        modules={[Navigation, Pagination, EffectFade, Autoplay, Thumbs]}
+                                        navigation
+                                        pagination={{ clickable: true }}
+                                        effect="fade"
+                                        autoplay={{ delay: 3000, disableOnInteraction: false }}
+                                        className="w-full h-[350px] md:h-[450px]"
+                                        style={{ '--swiper-navigation-color': '#6366f1', '--swiper-pagination-color': '#6366f1' }}
+                                        thumbs={{ swiper: thumbsSwiper }}
+                                    >
+                                        {photos.map((photo, index) => (
+                                            <SwiperSlide key={index}>
+                                                <img
+                                                    src={photo}
+                                                    alt={`Product ${index + 1}`}
+                                                    className="object-contain w-full h-[350px] md:h-[450px] bg-gray-50"
+                                                />
+                                            </SwiperSlide>
+                                        ))}
+                                    </Swiper>
+                                    {/* Thumbnails */}
+                                    <Swiper
+                                        modules={[Thumbs]}
+                                        onSwiper={setThumbsSwiper}
+                                        slidesPerView={Math.min(photos.length, 5)}
+                                        spaceBetween={12}
+                                        watchSlidesProgress
+                                        className="mt-4 w-full h-20"
+                                    >
+                                        {photos.map((photo, index) => (
+                                            <SwiperSlide key={index}>
+                                                <img
+                                                    src={photo}
+                                                    alt={`Thumbnail ${index + 1}`}
+                                                    className="object-cover w-full h-16 rounded-lg border-2 border-gray-200 hover:border-blue-500 cursor-pointer transition-all"
+                                                />
+                                            </SwiperSlide>
+                                        ))}
+                                    </Swiper>
+                                </>
                             ) : (
-                                <div className="relative">
-                                    <img
-                                        src={photos[0]}
-                                        alt={product?.title}
-                                        className="w-full h-96 lg:h-[500px] object-cover"
-                                    />
-                                </div>
+                                <img
+                                    src={photos[0]}
+                                    alt="Product"
+                                    className="object-contain w-full h-[350px] md:h-[450px] bg-gray-50"
+                                />
                             )}
                         </div>
-                        
-                        {/* Thumbnail Gallery for Multiple Images */}
-                        {photos.length > 1 && (
-                            <motion.div 
-                                className="flex space-x-3 mt-4 overflow-x-auto pb-2"
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: 0.3 }}
-                            >
-                                {photos.map((photo, index) => (
-                                    <motion.img
-                                        key={index}
-                                        src={photo}
-                                        alt={`Thumbnail ${index + 1}`}
-                                        className={`w-20 h-20 object-cover rounded-lg cursor-pointer border-2 transition-all ${
-                                            selectedImageIndex === index ? 'border-blue-500' : 'border-gray-200 hover:border-gray-300'
-                                        }`}
-                                        onClick={() => setSelectedImageIndex(index)}
-                                        whileHover={{ scale: 1.05 }}
-                                        whileTap={{ scale: 0.95 }}
-                                    />
-                                ))}
-                            </motion.div>
-                        )}
                     </motion.div>
 
                     {/* Right Column - Product Info */}
@@ -384,6 +375,18 @@ const ProductDetail = () => {
                                 <span>30 Day Returns</span>
                             </div>
                         </motion.div>
+
+                        {/* Product Details Section */}
+                        <div className="mt-10">
+                            <h2 className="text-xl font-bold mb-2 text-gray-800">Product Details</h2>
+                            <p className="text-gray-600 mb-6">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque euismod, urna eu tincidunt consectetur, nisi nisl aliquam nunc, eget aliquam massa nisl quis neque. Etiam euismod, urna eu tincidunt consectetur, nisi nisl aliquam nunc, eget aliquam massa nisl quis neque.
+                            </p>
+                            <h2 className="text-xl font-bold mb-2 text-gray-800">Return & Cancellation Policy</h2>
+                            <p className="text-gray-600">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam scelerisque aliquam odio et faucibus. Nulla rhoncus feugiat eros quis consectetur. Morbi neque ex, condimentum dapibus congue et, vulputate ut ligula. Vestibulum sit amet urna turpis. Mauris euismod elit et nisi ultrices, ut faucibus orci tincidunt.
+                            </p>
+                        </div>
                     </motion.div>
                 </div>
             </div>

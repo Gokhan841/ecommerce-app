@@ -230,8 +230,8 @@ const HeroSection = () => {
     <div className="relative bg-gray-100 p-4 lg:p-8">
       <div className="flex gap-4 lg:gap-6 min-h-[400px] lg:min-h-[500px]">
 
-        {/* Sol Taraf - %70 (Large+), %100 (Mobile) */}
-        <div className="w-full lg:w-[70%] rounded-2xl overflow-hidden shadow-xl relative">
+        {/* Sol Taraf - %65 (Large+), %100 (Mobile) */}
+        <div className="w-full lg:w-[65%] rounded-2xl overflow-hidden shadow-xl relative">
 
           {/* Mobile Layout - Vertical Stack (SM ve daha küçük) */}
           <div className="sm:hidden h-full flex flex-col">
@@ -286,8 +286,8 @@ const HeroSection = () => {
           </div>
         </div>
 
-        {/* Sağ Taraf - %30 (Sadece Large+) - Kategori Grid */}
-        <div className="hidden lg:block w-[30%]">
+        {/* Sağ Taraf - %35 (Sadece Large+) - Kategori Grid */}
+        <div className="hidden lg:block w-[35%]">
           <CategoryGrid />
         </div>
       </div>

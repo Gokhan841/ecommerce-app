@@ -1,7 +1,6 @@
 import './App.css';
 import './index.css';
 import Navbar from './components/Navbar';
-import Products from './components/Products';
 import ProductDetail from './components/ProductDetail';
 import { Routes, Route } from 'react-router-dom';
 import SignUp from './components/SignUp';
@@ -16,6 +15,7 @@ import AdminProducts from './components/Admin/AdminProducts';
 import AdminHome from './components/Admin/AdminHome';
 import ProtectedAdminRoute from './components/ProtectedAdminRoute';
 import Home from './pages/Home';
+import Footer from './components/Footer';
 
 function App() {
   return (
@@ -28,6 +28,7 @@ function App() {
         <Route path="/basket" element={<Basket />} />
         <Route path="/order" element={<Order />} />
         <Route path="/product/:productId" element={<ProductDetail />} />
+
 
         <Route element={<ProtectedAdminRoute />}>
           <Route path="/admin" element={<AdminPanel />}>
@@ -42,6 +43,7 @@ function App() {
          
         </Route>
       </Routes>
+      <Footer />
     </div>
   );
 }
