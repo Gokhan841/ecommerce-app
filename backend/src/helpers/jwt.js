@@ -1,7 +1,8 @@
 import JWT from "jsonwebtoken";
 import Boom from "boom";
 
-import redis from "../clients/redis";
+// In-memory storage for refresh tokens (Redis'siz portfolio çözümü)
+const refreshTokenStore = new Map();
 
 const signAccessToken = (data) => {
 	return new Promise((resolve, reject) => {
@@ -85,7 +86,11 @@ const signRefreshToken = (user_id) => {
 				reject(Boom.internal());
 			}
 
-			redis.set(user_id, token, "EX", 180 * 24 * 60 * 60);
+			// Memory'de refresh token'ı sakla (180 gün)
+			refreshTokenStore.set(user_id, {
+				token,
+				expiresAt: Date.now() + (180 * 24 * 60 * 60 * 1000)
+			});
 
 			resolve(token);
 		});
@@ -103,18 +108,31 @@ const verifyRefreshToken = async (refresh_token) => {
 				}
 
 				const { user_id } = payload;
-				const user_token = await redis.get(user_id);
+				const storedData = refreshTokenStore.get(user_id);
 
-				if (!user_token) {
+				if (!storedData) {
 					return reject(Boom.unauthorized());
 				}
 
-				if (refresh_token === user_token) {
+				// Token süresini kontrol et
+				if (Date.now() > storedData.expiresAt) {
+					refreshTokenStore.delete(user_id);
+					return reject(Boom.unauthorized());
+				}
+
+				if (refresh_token === storedData.token) {
 					return resolve(user_id);
+				} else {
+					return reject(Boom.unauthorized());
 				}
 			}
 		);
 	});
+};
+
+const clearRefreshToken = (user_id) => {
+	const deleted = refreshTokenStore.delete(user_id);
+	return deleted;
 };
 
 export {
@@ -122,4 +140,5 @@ export {
 	verifyAccessToken,
 	signRefreshToken,
 	verifyRefreshToken,
+	clearRefreshToken,
 };

@@ -8,7 +8,15 @@ import routes from './routes';
 
 const app = express();
 
-app.use(cors());
+// CORS ayarları - production'da frontend domain'inizi buraya ekleyin
+const corsOptions = {
+  origin: process.env.NODE_ENV === 'production' 
+    ? ['https://your-frontend-domain.vercel.app'] // Buraya Vercel domain'inizi ekleyeceksiniz
+    : ['http://localhost:3000', 'http://localhost:5173'], // Local development
+  credentials: true
+};
+
+app.use(cors(corsOptions));
 app.use(limiter);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -31,4 +39,5 @@ app.use((err, req, res, next) => {
   }
 });
 
-app.listen(4000, () => console.log('Server is up!'));
+const PORT = process.env.PORT || 4000;
+app.listen(PORT, () => console.log(`Server is up on port ${PORT}!`));

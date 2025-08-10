@@ -14,11 +14,14 @@ const AdminProducts = () => {
     photos: ['']
   });
 
+  // API base URL
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:4000';
+
   // Ürünleri getir
   const fetchProducts = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`http://localhost:4000/product`);
+      const response = await fetch(`${API_BASE_URL}/product`);
       const data = await response.json();
       setProducts(data);
     } catch (error) {
@@ -41,7 +44,7 @@ const AdminProducts = () => {
         photos: JSON.stringify(newProduct.photos.filter(photo => photo.trim() !== ''))
       };
 
-      const response = await fetch(`http://localhost:4000/product`, {
+      const response = await fetch(`${API_BASE_URL}/product`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -66,7 +69,7 @@ const AdminProducts = () => {
   // Ürün güncelle
   const handleUpdateProduct = async (productId, updatedData) => {
     try {
-      const response = await fetch(`http://localhost:4000/product/${productId}`, {
+      const response = await fetch(`${API_BASE_URL}/product/${productId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -91,7 +94,7 @@ const AdminProducts = () => {
   const handleDeleteProduct = async (productId) => {
     if (window.confirm('Bu ürünü silmek istediğinizden emin misiniz?')) {
       try {
-        const response = await fetch(`http://localhost:4000/product/${productId}`, {
+        const response = await fetch(`${API_BASE_URL}/product/${productId}`, {
           method: 'DELETE'
         });
 

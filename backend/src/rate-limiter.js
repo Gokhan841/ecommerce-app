@@ -1,15 +1,11 @@
 import RateLimit from 'express-rate-limit';
-import RedisStore from 'rate-limit-redis';
-import redis from './clients/redis';
 import Boom from 'boom';
 
+// Memory-based rate limiter (Redis'siz)
 const limiter = new RateLimit({
-  store: new RedisStore({
-    client: redis,
-    resetExpiryOnChange: true,
-    expiry: 30,
-  }),
-  max: 1000,
+  windowMs: 15 * 60 * 1000, // 15 dakika
+  max: 1000, // IP başına max 1000 istek
+  message: 'Too many requests from this IP',
   handler: (req, res, next) => {
     next(Boom.tooManyRequests());
   },

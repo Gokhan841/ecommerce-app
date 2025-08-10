@@ -6,11 +6,11 @@ import {
 	signAccessToken,
 	signRefreshToken,
 	verifyRefreshToken,
+	clearRefreshToken,
 } from "../../helpers/jwt";
 
 // validations
 import ValidationSchema from "./validations";
-import redis from "../../clients/redis";
 
 const Register = async (req, res, next) => {
 	const input = req.body;
@@ -114,9 +114,9 @@ const Logout = async (req, res, next) => {
 		}
 
 		const user_id = await verifyRefreshToken(refresh_token);
-		const data = await redis.del(user_id);
+		const deleted = clearRefreshToken(user_id);
 
-		if (!data) {
+		if (!deleted) {
 			throw Boom.badRequest();
 		}
 
