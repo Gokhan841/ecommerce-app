@@ -7,9 +7,9 @@
     "node": ">=16.0.0"
   },
   "scripts": {
-    "start": "node dist/app.js",
+    "start": "node -r sucrase/register src/app.js",
     "dev": "nodemon src/app.js",
-    "build": "npx sucrase ./src -d ./dist --transforms imports",
+    "build": "echo 'No build step required'",
     "test": "echo \"Error: no test specified\" && exit 1",
     "seed": "node seedProducts.js"
   },
