@@ -11,7 +11,7 @@ const app = express();
 // CORS ayarları - production'da frontend domain'inizi buraya ekleyin
 const corsOptions = {
   origin: process.env.NODE_ENV === 'production' 
-    ? ['https://your-frontend-domain.vercel.app'] // Buraya Vercel domain'inizi ekleyeceksiniz
+    ? ['https://ecommerce-app-bice-six.vercel.app'] // Frontend Vercel domain
     : ['http://localhost:3000', 'http://localhost:5173'], // Local development
   credentials: true
 };
